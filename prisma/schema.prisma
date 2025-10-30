@@ -1,0 +1,34 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  phone     String?
+  name      String
+  role      Role     @default(USER)
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  pickups   Pickup[]
+}
+
+model ScrapCategory {
+  id          String   @id @default(cuid())
+  name        String
+  subcategory String?
+  price       Float
+  lastUpdated DateTime @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
+  REP
+}
